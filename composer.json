@@ -1,0 +1,9 @@
+{
+    "require": {
+        "slim/slim": "^2.6",
+        "tracy/tracy": "^2.3",
+        "nette/neon": "^2.3",
+        "vrana/notorm": "dev-master"
+    }
+            
+}
