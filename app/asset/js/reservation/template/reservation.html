@@ -1,0 +1,27 @@
+<div class="content">
+    <h2 class="title">Rezervace lístků na 75.výročí souboru Vonica</h2>
+<script>
+	console.debug(seats);
+</script>
+    <div class="seatLayout">
+        <div ng-repeat="seat in $scope.seats" ng-click="seatClicked(seat.id)" ng-switch on="getStatus(seat.id)"
+						 style="left:{{seat.left}}px;top:{{seat.top}}px;">
+							<img ng-switch-when="selected" src="images/seat_selected.png">
+							<img ng-switch-when="reserved" src="images/seat_reserved.png">
+							<img ng-switch-default src="images/seat_available.png">
+        </div>
+    </div>
+
+    <div class="legend">
+        <img src="images/seat_available.png">  Dostupné
+        <img src="images/seat_reserved.png" class="padding-left">  Rezervováno
+        <img src="images/seat_selected.png" class="padding-left">  Vybráno
+    </div>
+
+    <div class="buttons">
+        <button ng-click="clearSelected()">Resetovat výběr</button>
+        <button ng-click="showSelected()">Potvrdit rezervaci</button>
+    </div>
+    
+    <!--img src="http://www.vonica.cz/wp-content/uploads/2013/11/12038991_1194594193889938_2028021714217736230_o-1024x722.jpg" alt="75 výročí souboru Vonica"/-->
+</div>

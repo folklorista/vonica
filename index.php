@@ -6,7 +6,7 @@ use Tracy\Debugger;
 use Slim\Slim;
 use Nette\Neon;
 
-//Debugger::enable();
+Debugger::enable();
 
 $config = \Nette\Neon\Neon::decode(file_get_contents('config/db.local.neon'));
 $app = new Slim($config);
@@ -22,7 +22,9 @@ $app->get("/api/v1/seat", function () use ($app, $db) {
             "id" => $seat['id'],
             "row" => $seat['row'],
             "col" => $seat['col'],
-            "seat_group" => $seat->seat_group['name'],
+            "left" => $seat['css_left'],
+            "top" => $seat['css_top'],
+            "seat_group" => $seat->seat_group['name']
         );
     }
     $app->response()->header("Content-Type", "application/json");
@@ -57,24 +59,24 @@ $app->post("/api/v1/reservation", function () use ($app, $db) {
     // get and decode JSON request body
     $request = $app->request();
     $body = $request->getBody();
-    $data = json_decode($body); 
+    $data = json_decode($body);
     $inserted_row = $db->reservation->insert(array(
         'firstname' => $data->firstname,
         'lastname' => $data->lastname,
         'email' => $data->email,
         'phone' => $data->phone,
-        'note' => $data->note,   
-        'created' => new \DateTime()   
+        'note' => $data->note,
+        'created' => new \DateTime()
     ));
-    
+
     foreach ($data->seats as $seat_id) {
         $db->reservation_seat->insert(array(
             'reservation_id' => $inserted_row['id'],
             'seat_id' => $seat_id,
-            'created' => new \DateTime()   
+            'created' => new \DateTime()
         ));
     }
-    
+
     // return JSON-encoded response body
     $app->response()->header('Content-Type', 'application/json');
     echo json_encode($data);

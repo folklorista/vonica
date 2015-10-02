@@ -9,6 +9,7 @@
  */
 angular.module('seatReservationApp')
     .controller('MainCtrl', function ($scope) {
+console.debug('test APP');
 
         // Init layout
         $scope.rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];

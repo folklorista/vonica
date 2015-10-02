@@ -5,5 +5,4 @@
         "nette/neon": "^2.3",
         "vrana/notorm": "dev-master"
     }
-            
 }

@@ -1,0 +1,5 @@
+db.driver: mysql
+db.hostname: localhost
+db.dbname: vonica
+db.username: vonica
+db.password: vonica
