@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="vendor/jquery-ui.min.css">
     <link rel="stylesheet" href="css/custom.css">
-    <script src="vendor/jquery-1.11.1.min.js"></script>
+    <script src="vendor/jquery-1.11.3.min.js"></script>
     <script src="vendor/jquery-ui.min.js"></script>
 		<script>
 			var appHelper = {
@@ -51,62 +52,161 @@
     <![endif]-->
 
 		<div class="content">
-				<!--h2 class="title">Rezervace lístků na 75.výročí souboru Vonica</h2-->
-				<h2 class="title">Test issue</h2>
-				<div class="seatLayout">
+				<h2 class="title">Rezervace lístků na pořad k 75.výročí souboru Vonica</h2>
+				<p>Velký sál Městského divadla ve Zlíně, 20. listopadu 2015 od 19 hodin</p>
+				<p>Telefonní číslo pro vyřizování rezervací a placení lístků: <b>+420 730 678 730</b> (mezi 9-21 hod.)</p>
+
+				<div class="legend">
+					<table>
+						<tr>
+							<th><img src="images/seat_selected.png"></th>
+							<td>Vybráno</td>
+						</tr>
+						<tr>
+							<th><img src="images/seat_available.png"></th>
+							<td>Dostupné</td>
+						</tr>
+						<tr>
+							<th><img src="images/seat_default.png"></th>
+							<td>Rezervováno</td>
+						</tr>
+						<tr>
+							<th><img src="images/seat_ensemble.png"></th>
+							<td>Rezervováno souborem</td>
+						</tr>
+						<tr>
+							<th><img src="images/seat_distribution.png"></th>
+							<td>V prodeji na pokladně Městského divadla Zlín</td>
+						</tr>
+					</table>
+				</div>
+				<div class="seatLayout">					
 						<div class="seat" ng-repeat="seat in seats" ng-click="seatClicked(seat.id)" ng-switch on="getStatus(seat.id)"
 								 style="left:{{seat.left}}px;top:{{seat.top}}px;" title="{{seat.row}}.{{seat.seat_group}} - sedadlo {{seat.col}}">
 									<img ng-switch-when="selected" src="images/seat_selected.png">
-									<img ng-switch-when="reserved" src="images/seat_reserved.png">
+									<img ng-switch-when="default" src="images/seat_default.png">
+									<img ng-switch-when="ensemble" src="images/seat_ensemble.png">
+									<img ng-switch-when="distribution" src="images/seat_distribution.png">
 									<img ng-switch-default src="images/seat_available.png">
 						</div>
+					<div id="seat_numbers">
+						<div style="position:absolute;left:0px;top:501px;">1</div>
+						<div style="position:absolute;left:30px;top:561px;">2</div>
+						<div style="position:absolute;left:40px;top:621px;">3</div>
+						<div style="position:absolute;left:46px;top:379px;">14</div>
+						<div style="position:absolute;left:56px;top:353px;">13</div>
+						<div style="position:absolute;left:57px;top:410px;">15</div>
+						<div style="position:absolute;left:64px;top:442px;">16</div>
+						<div style="position:absolute;left:76px;top:475px;">17</div>
+						<div style="position:absolute;left:80px;top:671px;">4</div>
+						<div style="position:absolute;left:88px;top:508px;">18</div>
+						<div style="position:absolute;left:120px;top:721px;">5</div>
+						<div style="position:absolute;left:121px;top:546px;">19</div>
+						<div style="position:absolute;left:149px;top:586px;">20</div>
+						<div style="position:absolute;left:154px;top:164px;">6</div>
+						<div style="position:absolute;left:164px;top:140px;">5</div>
+						<div style="position:absolute;left:164px;top:192px;">7</div>
+						<div style="position:absolute;left:171px;top:221px;">8</div>
+						<div style="position:absolute;left:174px;top:114px;">4</div>
+						<div style="position:absolute;left:184px;top:87px;">3</div>
+						<div style="position:absolute;left:194px;top:250px;">9</div>
+						<div style="position:absolute;left:198px;top:630px;">21</div>
+						<div style="position:absolute;left:214px;top:62px;">2</div>
+						<div style="position:absolute;left:225px;top:36px;">1</div>
+						<div style="position:absolute;left:227px;top:287px;">10</div>
+						<div style="position:absolute;left:230px;top:0px;">Jeviště</div>
+						<div style="position:absolute;left:262px;top:783px;">6</div>
+						<div style="position:absolute;left:269px;top:677px;">22</div>
+						<div style="position:absolute;left:272px;top:324px;">11</div>
+						<div style="position:absolute;left:332px;top:793px;">7</div>
+						<div style="position:absolute;left:358px;top:370px;">12</div>
+						<div style="position:absolute;left:578px;top:370px;">12</div>
+						<div style="position:absolute;left:618px;top:788px;">9</div>
+						<div style="position:absolute;left:672px;top:324px;">11</div>
+						<div style="position:absolute;left:688px;top:778px;">10</div>
+						<div style="position:absolute;left:689px;top:677px;">22</div>
+						<div style="position:absolute;left:707px;top:287px;">10</div>
+						<div style="position:absolute;left:725px;top:36px;">1</div>
+						<div style="position:absolute;left:734px;top:62px;">2</div>
+						<div style="position:absolute;left:735px;top:254px;">9</div>
+						<div style="position:absolute;left:759px;top:629px;">21</div>
+						<div style="position:absolute;left:764px;top:87px;">3</div>
+						<div style="position:absolute;left:771px;top:221px;">8</div>
+						<div style="position:absolute;left:774px;top:114px;">4</div>
+						<div style="position:absolute;left:784px;top:140px;">5</div>
+						<div style="position:absolute;left:784px;top:192px;">7</div>
+						<div style="position:absolute;left:794px;top:164px;">6</div>
+						<div style="position:absolute;left:810px;top:585px;">20</div>
+						<div style="position:absolute;left:840px;top:721px;">11</div>
+						<div style="position:absolute;left:842px;top:545px;">19</div>
+						<div style="position:absolute;left:869px;top:507px;">18</div>
+						<div style="position:absolute;left:879px;top:473px;">17</div>
+						<div style="position:absolute;left:885px;top:441px;">16</div>
+						<div style="position:absolute;left:889px;top:671px;">12</div>
+						<div style="position:absolute;left:897px;top:352px;">13</div>
+						<div style="position:absolute;left:898px;top:409px;">15</div>
+						<div style="position:absolute;left:907px;top:378px;">14</div>
+						<div style="position:absolute;left:929px;top:610px;">13</div>
+						<div style="position:absolute;left:929px;top:540px;">14</div>
+					</div>
 				</div>
 
 				<div class="form">
-					<form novalidate class="simple-form">
+					<form novalidate class="simple-form" name="reservation">
 						<table>
 							<tr>
-								<th>Křestní jméno:</th>
-								<td><input type="text" ng-model="$scope.user.firstname" /></td>
-							</tr>
-							<tr>
-								<th>Příjmení:</th>
-								<td><input type="text" ng-model="$scope.user.lastname" /></td>
-							</tr>
-							<tr>
-								<th>E-mail:</th>
-								<td><input type="email" ng-model="$scope.user.email" /></td>
-							</tr>
-							<tr>
-								<th>Telefon:</th>
-								<td><input type="text" ng-model="$scope.user.phone" /></td>
-							</tr>
-							<tr>
-								<th>Počet rezervovaných lístků:</th>
-								<td ng-bind="$scope.selected_count"></td>
-							</tr>
-							<tr>
-								<td colspan="2">
-									Poznámka:<br />
-									<textarea id="note" ng-model="$scope.user.note" cols="100" rows="3"></textarea>
+								<th>Křestní jméno: <span class="required">*</span></th>
+								<td><input type="text" name="firstname" ng-model="user.firstname" ng-required="true" />
+									<span class="error" ng-show="!reservation.firstname.$untouched && reservation.firstname.$error.required">Zadejte Vaše jméno</span>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="2">
-									<button ng-click="clearSelected()">Resetovat výběr</button>
-									<button ng-click="showSelected()">Potvrdit rezervaci</button>
+								<th>Příjmení: <span class="required">*</span></th>
+								<td><input type="text" name="lastname" ng-model="user.lastname" ng-required="true" />
+									<span class="error" ng-show="!reservation.lastname.$untouched && reservation.lastname.$error.required">Zadejte Vaše přijmení</span>
+								</td>
+							</tr>
+							<tr>
+								<th>E-mail: <span class="required">*</span></th>
+								<td><input type="email" name="email" ng-model="user.email" ng-required="true" />
+									<span class="error" ng-show="reservation.email.$error.required">E-mail je vyžadován</span>
+									<span class="error" ng-show="!reservation.email.$untouched && reservation.$error.email">Není platný e-mail</span>
+								</td>
+							</tr>
+							<tr>
+								<th>Telefon:</th>
+								<td><input type="text" name="phone" ng-model="user.phone" />
+								</td>
+							</tr>
+							<tr>
+								<th>Počet rezervovaných lístků:</th>
+								<td>{{selected_count}} <span class="error" ng-show="!selected_count">Nemáte vybrána žádná místa k rezervaci!</span>
+								</td>
+							</tr>
+							<tr ng-show="selected_count">
+								<th>Cena celkem:</th>
+								<td><b>{{selected_count * 150}} Kč</b>
+								</td>
+							</tr>
+						<tr>
+								<th>Poznámka:</th>
+								<td>
+									<textarea id="note" ng-model="user.note" rows="3"></textarea>
+									<p>Uveďte prosím způsob zaplacení a vyzvednutí lístků</p>
+								</td>
+							</tr>
+							<tr>
+								<th></th>
+								<td>
+									<button ng-click="showSelected()" ng-disabled="reservation.$invalid || !selected_count">Potvrdit rezervaci</button>	
 								</td>
 							</tr>
 						</table>
 					</form>
 				</div>
-				<div class="legend">
-						<img src="images/seat_available.png">  Dostupné
-						<img src="images/seat_reserved.png" class="padding-left">  Rezervováno
-						<img src="images/seat_selected.png" class="padding-left">  Vybráno
-				</div>
 
-				<!--img src="http://www.vonica.cz/wp-content/uploads/2013/11/12038991_1194594193889938_2028021714217736230_o-1024x722.jpg" alt="75 výročí souboru Vonica"/-->
+
+				<img src="http://www.vonica.cz/wp-content/uploads/2013/11/12038991_1194594193889938_2028021714217736230_o-1024x722.jpg" alt="75 výročí souboru Vonica"/>
 		</div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

@@ -13,9 +13,10 @@ Reservation.$inject = [
 	'$q',
 	'$translate',
 	'$scope',
+	'$http',
 	'Restangular'
 ];
-function Reservation($state, $stateParams, $q, $translate, $scope, Restangular) {
+function Reservation($state, $stateParams, $q, $translate, $scope, $http, Restangular) {
 	'use strict';
 
 	/*jshint validthis: true */
@@ -25,7 +26,6 @@ function Reservation($state, $stateParams, $q, $translate, $scope, Restangular) 
 
 	// Set reserved and selected
 	var reserved = [];
-	$scope.selected = [];
 	$scope.selected_count = 0;
 	$scope.user = {
 		'firstname': '',
@@ -55,7 +55,6 @@ function Reservation($state, $stateParams, $q, $translate, $scope, Restangular) 
 	function getSeats() {
 		return Restangular.all('api').all('v1').all('seat').getList({}).then(function(data) {
 			$scope.seats = data;
-			console.debug($scope.seats);
 			return $scope.seats;
 		}, function (data) {
 			console.error('Nepodařilo se nahrát seznam sedadel');
@@ -69,7 +68,7 @@ function Reservation($state, $stateParams, $q, $translate, $scope, Restangular) 
 	function getReserved() {
 		return Restangular.all('api').all('v1').all('seat').all('reserved').getList({}).then(function(data) {
 			angular.forEach(data, function(foo) {
-				reserved.push(foo.id);
+				reserved[foo.id] = foo.type;
 			});
 			return reserved;
 		}, function (data) {
@@ -79,51 +78,53 @@ function Reservation($state, $stateParams, $q, $translate, $scope, Restangular) 
 
 	// seat onClick
 	$scope.seatClicked = function(seatPos) {
-		if ('reserved' == $scope.getStatus(seatPos)) {
+		if (false !== $scope.getStatus(seatPos) && 'selected' !== $scope.getStatus(seatPos)) {
 			return false;
 		}
 		console.log("Selected Seat: " + seatPos);
-		var index = $scope.selected.indexOf(seatPos);
+		var index = $scope.user.seats.indexOf(seatPos);
 		if(index != -1) {
 				// seat already selected, remove
-				$scope.selected.splice(index, 1)
+				$scope.user.seats.splice(index, 1)
 		} else {
 				// new seat, push
-				$scope.selected.push(seatPos);
+				$scope.user.seats.push(seatPos);
 		}
-		$scope.selected_count = $scope.selected.length;
+		$scope.selected_count = $scope.user.seats.length;
 	}
 
 	// get seat status
 	$scope.getStatus = function(seatPos) {
-			if(reserved.indexOf(seatPos) > -1) {
-					return 'reserved';
-			} else if($scope.selected.indexOf(seatPos) > -1) {
+			if(seatPos in reserved) {
+				return reserved[seatPos];
+			} else if($scope.user.seats.indexOf(seatPos) > -1) {
 					return 'selected';
+			} else {
+				return false;
 			}
 	}
 
 	// clear selected
 	$scope.clearSelected = function() {
-			$scope.selected = [];
+			$scope.user.seats = [];
 			$scope.selected_count = 0;
 	}
 
 	// show selected
 	$scope.showSelected = function() {
-			if($scope.selected.length > 0) {
-					console.log("Selected Seats: \n" + $scope.selected);
-					$http.post('/api/v1/reservation', $scope.user, {
-						withCredentials: true,
-						headers: {'Content-Type': 'application/json' },
-						transformRequest: angular.identity
-					}).then(function (data) {
-						console.debug(data);
-					}, function (data) {
-						console.error(data);
-					});
+			if($scope.user.seats.length > 0) {
+				$http.post('/api/v1/reservation', $scope.user, {
+					headers: {'Content-Type': 'application/json' }
+				}).then(function (data) {
+					console.debug(data);
+					window.alert('Rezervace byla úspěšně vyřízena! Rezervace je platná 5 dní');
+					location.reload();
+				}, function (data) {
+					console.error(data);
+					window.alert('Rezervace se nezdařila!');
+				});
 			} else {
-					console.log("No seats selected!");
+				console.log("No seats selected!");
 			}
 	}
 };

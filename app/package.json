@@ -1,7 +1,7 @@
 {
   "private": true,
   "devDependencies": {
-    "gulp": "^3.8.8",
+    "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
     "gulp-faster-browserify": "^0.2.1",
     "gulp-less": "3.0.2",
