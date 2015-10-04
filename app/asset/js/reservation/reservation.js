@@ -72,7 +72,7 @@ function Reservation($state, $stateParams, $q, $translate, $scope, $http, Restan
 			});
 			return reserved;
 		}, function (data) {
-			console.error('Nepodařilo se nahrát seznam rezervací');
+			windows.alert('Nepodařilo se nahrát seznam rezervací, zkuste prosím stránku obnovit stiskem klávesy F5');
 		});
 	}
 
@@ -118,13 +118,14 @@ function Reservation($state, $stateParams, $q, $translate, $scope, $http, Restan
 				}).then(function (data) {
 					console.debug(data);
 					window.alert('Rezervace byla úspěšně vyřízena! Rezervace je platná 5 dní');
-					location.reload();
+					//location.reload();
 				}, function (data) {
 					console.error(data);
-					window.alert('Rezervace se nezdařila!');
+					window.alert('Rezervace se nezdařila, některá místa byla zřejmě zarezervována už jinou osobou.');
+					getReserved();
 				});
 			} else {
-				console.log("No seats selected!");
+				window.alert('Rezervace se nezdařila, protože systém!');
 			}
 	}
 };

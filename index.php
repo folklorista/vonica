@@ -6,7 +6,7 @@ use Tracy\Debugger;
 use Slim\Slim;
 use Nette\Neon;
 
-Debugger::enable();
+//Debugger::enable();
 
 // slim
 $config = \Nette\Neon\Neon::decode(file_get_contents('config/db.local.neon'));
@@ -65,6 +65,7 @@ $app->post("/api/v1/reservation", function () use ($app, $db, $mailer) {
     $request = $app->request();
     $body = $request->getBody();
     $data = json_decode($body);
+
     $inserted_row = $db->reservation->insert(array(
         'firstname' => $data->firstname,
         'lastname' => $data->lastname,
@@ -73,6 +74,15 @@ $app->post("/api/v1/reservation", function () use ($app, $db, $mailer) {
         'note' => $data->note,
         'created' => new \DateTime()
     ));
+		
+		$reserved_seats = $db->reservation_seat()
+		 ->where("seat_id IN (?)", implode(',', $data->seats));
+
+		if ($reserved_seats->count()) {
+			$app->response()->status(400);
+			$app->response()->header('X-Status-Reason', 'Already registered');		
+			return;
+		}
 
     foreach ($data->seats as $seat_id) {
         $db->reservation_seat->insert(array(

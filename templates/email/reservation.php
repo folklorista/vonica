@@ -14,8 +14,9 @@
 		<?php endforeach; ?>
 		</ul>
 		<p>Celkem tedy <b><?= count($seats); ?></b> vstupenek za <b><?= count($seats) * $price_per_ticket ?> Kč</b>.</p>
-		<p style="color: red">Vstupenky můžete zaplatit a vyzvednout osobně během tanečních zkoušek zkoušek (úterý/pátek 19h-22h) v budově Zlínského klubu 204 (tj. bývalá knihovna, <a href="https://www.google.cz/maps/place/Zl%C3%ADnsk%C3%BD+klub+204">zobrazit na mapě</a>),
-			případně také dle telefonické domluvy.<br />Telefonní číslo pro vyřizování rezervací a placení lístků: <b>+420 730 678 730</b> (mezi 9-21 hod.)</p>
+		<p><span style="color: red">Vstupenky můžete zaplatit a vyzvednout <b>osobně během tanečních zkoušek</b> (úterý/pátek 19h-22h) v budově Zlínského klubu 204 (tj. bývalá knihovna, <a href="https://www.google.cz/maps/place/Zl%C3%ADnsk%C3%BD+klub+204">zobrazit na mapě</a>).</span><br />
+					Nebo je možné se na způsobu úhrady a vyzvednutí vstupenek se domluvit na telefonním čísle <i>+420 730 678 730</i> (určeno zejména pro mimozlínské diváky, volejte mezi 9-21 hod.)
+		</p>
 		
 		<?php
 		$now = new DateTime('+5 days');

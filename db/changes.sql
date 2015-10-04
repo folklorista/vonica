@@ -10,3 +10,7 @@ UPDATE `reservation` SET `type` = 'ensemble' WHERE `id` = '12';
 
 ALTER TABLE `reservation`
 ADD `cancelled` timestamp NULL;
+
+ALTER TABLE `reservation_seat`
+ADD UNIQUE `seat_id` (`seat_id`),
+DROP INDEX `seat_id_reservation_id`;
