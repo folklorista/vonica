@@ -81,7 +81,6 @@ function Reservation($state, $stateParams, $q, $translate, $scope, $http, Restan
 		if (false !== $scope.getStatus(seatPos) && 'selected' !== $scope.getStatus(seatPos)) {
 			return false;
 		}
-		console.log("Selected Seat: " + seatPos);
 		var index = $scope.user.seats.indexOf(seatPos);
 		if(index != -1) {
 				// seat already selected, remove
@@ -116,13 +115,23 @@ function Reservation($state, $stateParams, $q, $translate, $scope, $http, Restan
 				$http.post('/api/v1/reservation', $scope.user, {
 					headers: {'Content-Type': 'application/json' }
 				}).then(function (data) {
-					console.debug(data);
 					window.alert('Rezervace byla úspěšně vyřízena! Rezervace je platná 5 dní');
-					//location.reload();
-				}, function (data) {
-					console.error(data);
-					window.alert('Rezervace se nezdařila, některá místa byla zřejmě zarezervována už jinou osobou.');
 					getReserved();
+				}, function (data) {
+					window.alert('Rezervace se nezdařila, některá místa byla zřejmě zarezervována už jinou osobou.');
+					$q.all([getReserved()]).then(function () {
+						var selected = angular.copy($scope.user.seats);
+						angular.forEach(selected, function(seatPos) {
+							if (false !== $scope.getStatus(seatPos) && 'selected' !== $scope.getStatus(seatPos)) {
+								// seat already selected, remove
+								var index = $scope.user.seats.indexOf(seatPos);
+								if(index != -1) {						
+									// seat already selected, remove
+									$scope.user.seats.splice(index, 1)
+								}
+							}
+						});
+					});					
 				});
 			} else {
 				window.alert('Rezervace se nezdařila, protože systém!');

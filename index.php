@@ -160,13 +160,11 @@ $app->get('/api/v1/test-email', function() use ($app, $mailer, $db){
 	$seats = $db->reservation_seat()
 		 ->select('seat.row, seat.col, seat.seat_group.name')
      ->where("reservation_id = ?", $inserted_row['id']);
-    $welcomeEmail = $app->view->fetch('email/welcome.php', array(
+    $welcomeEmail = $app->view->fetch('email/reservation.php', array(
 				'seats' => $seats,
 				'price_per_ticket' => 150
 			)
 		);
-    //$welcomeEmail = 'Toto je test';
-		echo $welcomeEmail;exit;
     // Setting all needed info and passing in my email template.
     $message = Swift_Message::newInstance('Potvrzení rezervace')
                     ->setFrom(array('vonica@vonica.cz' => 'Vonica Zlín'))
