@@ -10,8 +10,6 @@ var coreModule = require('angular').module('vonica.core', [
     require('angular-cookies'),
 		'restangular',
 		require('angular-ui-router'),
-		require('angular-formly'),
-    require('angular-formly-templates-bootstrap'),
 		'ui.bootstrap',
 		'oc.lazyLoad',
 		'pascalprecht.translate',

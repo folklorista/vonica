@@ -4,8 +4,8 @@ var mainModule = require('angular').module('vonica');
 
 mainModule.run(mainRun);
 
-mainRun.$inject = ['$rootScope', '$state', 'formlyConfig', 'Restangular'];
-function mainRun($rootScope, $state, formlyConfig, Restangular)
+mainRun.$inject = ['$rootScope', '$state', 'Restangular'];
+function mainRun($rootScope, $state, Restangular)
 {
 
 /**
@@ -21,14 +21,6 @@ function restangularConfig(RestangularProvider) {
 	RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
 		return data.data;
 	});
-}
-
-/**
- * Konfigurace formly
- */
-mainModule.config(formlyConfig);
-formlyConfig.$inject = ['formlyConfigProvider'];
-function formlyConfig(formlyConfigProvider) {
 }
 
 mainModule.config(languageConfig);
