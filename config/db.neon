@@ -1,5 +1,8 @@
 db.driver: mysql
-db.hostname: localhost
-db.dbname: vonica
+db.hostname: 
+db.dbname: 
 db.username: 
 db.password: 
+
+mode: 'production'
+debug: false
