@@ -19,6 +19,18 @@ function reservationRoute($stateProvider) {
 			}
 		}).
 
+		state('app.reservation-list', {
+			url: '/reservation-list',
+			templateUrl: appHelper.templatePath('reservation/template/reservation.list'),
+			controller: 'ReservationList as vm',
+			resolve: {
+				deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+					return $ocLazyLoad.load([
+					]);
+				}]
+			}
+		}).
+
 		state('app.reservation-new', {
 			url: '/reservation-new',
 			templateUrl: appHelper.templatePath('reservation/template/reservation.detail'),

@@ -15,14 +15,18 @@ class Router {
 	public function run() {
 		$this->app->get("/api/v1/seat", array($this, 'getSeats'));
 		$this->app->get("/api/v1/seat/reserved", array($this, 'getReservedSeats'));
-		$this->app->post("/api/v1/reservation", array($this, 'createReservation'));
+		$this->app->get("/api/v1/reservation", array($this, 'getReservationList'));
 		$this->app->get("/api/v1/reservation/sendmail", array($this, 'sendMailToAll'));
+		$this->app->put("/api/v1/reservation/:reservation_id", array($this, 'confirmReservation'));
+		$this->app->delete("/api/v1/reservation/:reservation_id", array($this, 'cancelReservation'));
+		$this->app->get("/api/v1/reservation/:reservation_id", array($this, 'getReservation'));
+		$this->app->post("/api/v1/reservation", array($this, 'createReservation'));
 		$this->app->get("/api/v1/test-email", array($this, 'testMail'));
 	}
 
 	function getSeats() {
 		$seats = array();
-		foreach ($this->db->seat() as $seat) {
+		foreach ($this->db->seat()->order('id ASC') as $seat) {
 			$seats[]  = array(
 				"id" => $seat['id'],
 				"row" => $seat['row'],
@@ -52,6 +56,107 @@ class Router {
 		}
 		$this->app->response()->header("Content-Type", "application/json");
 		$json = json_encode($reservations);
+		if (FALSE === $json) {
+			echo json_last_error_msg();
+		}
+		echo $json;
+	}
+
+	function getReservation($reservation_id) {
+		$result = array(
+			'user' => array(
+				'firstname' => '',
+				'lastname' => '',
+				'email' => '',
+				'phone' => '',
+				'note' => '',
+				'seats' => array()
+			),
+			'timestamps' => array(
+				'created' => null,
+				'changed' => null,
+				'confirmed' => null,
+				'cancelled' => null,
+			)
+		);
+
+		$data = $this->db->reservation()->where('id = ?', $reservation_id)->and('type = ?', 'default')->fetch();
+		if ($data) {
+			$result['user']['firstname'] = $data['firstname'];
+			$result['user']['lastname'] = $data['lastname'];
+			$result['user']['email'] = $data['email'];
+			$result['user']['phone'] = $data['phone'];
+			$result['user']['note'] = $data['note'];
+			$result['timestamps']['created'] = $data['created'];
+			$result['timestamps']['changed'] = $data['changed'];
+			$result['timestamps']['confirmed'] = $data['confirmed'];
+			$result['timestamps']['cancelled'] = $data['cancelled'];
+
+			foreach ($this->db->reservation_seat()->where('reservation.id = ?', $reservation_id)
+			as $data) {
+				$result['user']['seats'][]  = $data->seat['id'];
+			}
+		}
+
+		$this->app->response()->header("Content-Type", "application/json");
+		$json = json_encode($result);
+		if (FALSE === $json) {
+			echo json_last_error_msg();
+		}
+		echo $json;
+	}
+
+	function confirmReservation($reservation_id) {
+		$result = false;
+		$rows = $this->db->reservation()->where('id = ?', $reservation_id)
+			->and('type = ?', 'default')->and('confirmed IS NULL OR confirmed = 0');
+		if ($rows->count()) {
+			$rows->update(array('confirmed' => new DateTime()));
+			$result = true;
+		}
+
+		$this->app->response()->header("Content-Type", "application/json");
+		$json = json_encode($result);
+		if (FALSE === $json) {
+			echo json_last_error_msg();
+		}
+		echo $json;
+	}
+
+	function cancelReservation($reservation_id) {
+		$result = false;
+		$rows = $this->db->reservation()->where('id = ?', $reservation_id)
+			->and('type = ?', 'default')->and('cancelled IS NULL OR cancelled = 0');
+		if ($rows->count()) {
+			$rows->update(array('cancelled' => new DateTime()));
+			$result = true;
+		}
+
+		$this->app->response()->header("Content-Type", "application/json");
+		$json = json_encode($result);
+		if (FALSE === $json) {
+			echo json_last_error_msg();
+		}
+		echo $json;
+	}
+
+	function getReservationList() {
+		$result = array();
+
+		foreach ($this->db->reservation()->where('type = ?', 'default')->order('lastname ASC, firstname ASC') as $data) {
+			$result[] = array(
+				'id' => $data['id'],
+				'firstname' => $data['firstname'],
+				'lastname' => $data['lastname'],
+				'created' => $data['created'],
+				'confirmed' => $data['confirmed'],
+				'cancelled' => $data['cancelled'],
+				'seat_count' => $this->db->reservation_seat()->where('reservation.id = ?', $data['id'])->count()
+			);
+		}
+
+		$this->app->response()->header("Content-Type", "application/json");
+		$json = json_encode($result);
 		if (FALSE === $json) {
 			echo json_last_error_msg();
 		}
